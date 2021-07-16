@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-gateway
+  name: nginx-gateway
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-gateway
+  template:
+    metadata:
+      labels:
+        app: nginx-gateway
+    spec:
+      containers:
+        - name: nginx-gateway
+          image: nginx-gateway
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 40m
+            limits:
+              cpu: 70m
+      restartPolicy: Always
