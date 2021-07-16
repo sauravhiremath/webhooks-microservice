@@ -9,7 +9,7 @@ import {
   Errors,
 } from "moleculer";
 import admin from "firebase-admin";
-import HealthCheckMixin from "@webhooks-microservice/health-check";
+import HealthCheckMixin from "./healthCheck";
 
 import serviceAccount from "./auth.json";
 
