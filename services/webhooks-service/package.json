@@ -5,6 +5,7 @@
   "author": "Saurav M. H <sauravhiremath@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/isomorphic-fetch": "^0.0.35",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.3.2",
     "@types/node-fetch": "^2.5.11",
