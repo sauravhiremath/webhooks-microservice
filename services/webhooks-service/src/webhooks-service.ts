@@ -8,7 +8,7 @@ import {
   NodeHealthStatus,
   Errors,
 } from "moleculer";
-import dbMixin from "@webhooks-microservice/db-mixin";
+import dbMixin from "./dbMixinService";
 const fetch = fetchRetry(nodeFetch);
 
 enum CustomErrors {

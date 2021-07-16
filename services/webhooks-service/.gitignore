@@ -155,3 +155,5 @@ dist
 
 # End of https://www.toptal.com/developers/gitignore/api/yarn,node,git
 {"mode":"full","isActive":false}
+
+/build

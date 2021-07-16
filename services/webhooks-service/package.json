@@ -4,9 +4,18 @@
   "description": "Main webhooks service containing all actions",
   "author": "Saurav M. H <sauravhiremath@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --debug ./src/index.ts",
+    "start": "node ./build/index.js",
+    "ci": "jest --watch",
+    "test": "jest --coverage",
+    "lint": "tslint -p tsconfig.json"
+  },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.35",
     "@types/jest": "^26.0.24",
+    "@types/lodash": "^4.14.171",
     "@types/node": "^16.3.2",
     "@types/node-fetch": "^2.5.11",
     "jest": "^27.0.6",
@@ -15,12 +24,40 @@
     "ts-jest": "^27.0.3",
     "ts-node": "^10.1.0",
     "ts-node-dev": "^1.1.8",
+    "tsconfig-paths": "^3.10.1",
     "tslint": "^6.1.3",
     "typescript": "^4.3.5"
   },
   "dependencies": {
     "fetch-retry": "^4.1.1",
+    "ioredis": "^4.27.6",
     "isomorphic-fetch": "^3.0.0",
-    "moleculer": "^0.14.15"
+    "lodash": "^4.17.21",
+    "moleculer": "^0.14.15",
+    "moleculer-db": "^0.8.14",
+    "moleculer-db-adapter-mongo": "^0.4.12"
+  },
+  "engines": {
+    "node": ">=12.x.x"
+  },
+  "jest": {
+    "coverageDirectory": "<rootDir>/coverage",
+    "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testMatch": [
+      "**/*.spec.(ts|js)"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.specs.json"
+      }
+    }
   }
 }

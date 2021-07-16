@@ -12,10 +12,7 @@
     "pretty": true,
     "types": ["jest", "node"],
     "sourceMap": false,
-    "target": "es6",
-    "paths": {
-      "@webhooks-microservice/*": ["../../packages/*"]
-    }
+    "target": "es6"
   },
   "include": [
     "./src/**/*.ts",
