@@ -1,0 +1,62 @@
+{
+  "name": "web-gateway-service",
+  "version": "0.0.1",
+  "description": "Web gateway for accessing the internal services",
+  "author": "Saurav <sauravhiremath@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --inspect --respawn ./src/index.ts",
+    "start": "node ./build/index.js",
+    "ci": "jest --watch",
+    "test": "jest --coverage",
+    "lint": "tslint -p tsconfig.json"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
+    "firebase-admin": "^9.11.0",
+    "ioredis": "^4.27.6",
+    "jsonwebtoken": "^8.5.1",
+    "moleculer": "^0.14.15",
+    "moleculer-web": "^0.10.0",
+    "nats": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.1",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.3.2",
+    "jest": "^27.0.6",
+    "jest-cli": "^27.0.6",
+    "moleculer-repl": "^0.6.6",
+    "ts-jest": "^27.0.3",
+    "ts-node": "^10.1.0",
+    "ts-node-dev": "^1.1.8",
+    "tslint": "^6.1.3",
+    "typescript": "^4.3.5"
+  },
+  "engines": {
+    "node": ">=12.x.x"
+  },
+  "jest": {
+    "coverageDirectory": "<rootDir>/coverage",
+    "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testMatch": [
+      "**/*.spec.(ts|js)"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.specs.json"
+      }
+    }
+  }
+}

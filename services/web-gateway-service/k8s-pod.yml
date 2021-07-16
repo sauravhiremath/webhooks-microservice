@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: web-gateway-service
+  name: web-gateway-service
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-gateway-service
+  template:
+    metadata:
+      labels:
+        app: web-gateway-service
+    spec:
+      containers:
+        - name: web-gateway-service
+          image: web-gateway-service
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 3001
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3001
+          envFrom:
+            - configMapRef:
+                name: base-config
+          env:
+            - name: PORT
+              value: "80"
+            - name: REQUESTS_PER_MINUTE
+              value: "100"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-auth
+                  key: jwtSecret
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 40m
+            limits:
+              cpu: 70m
+      restartPolicy: Always
