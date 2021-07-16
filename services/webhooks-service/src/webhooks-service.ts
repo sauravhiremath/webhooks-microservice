@@ -175,7 +175,7 @@ export default class WebhookService extends Service {
    * @private
    * @param {Context} ctx
    * @returns {Promise<NodeHealthStatus>}
-   * @memberof DecksService
+   * @memberof WebhookService
    */
   private health(ctx: Context): Promise<NodeHealthStatus> {
     return ctx.call("$node.health");
