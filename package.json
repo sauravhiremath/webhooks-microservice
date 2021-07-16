@@ -1,0 +1,14 @@
+{
+  "name": "webhooks-microservice",
+  "repository": "https://github.com/sauravhiremath/webhooks-microservice.git",
+  "author": "Saurav M. H <sauravhiremath@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "add-deps": "sh ./helm/add-repos.sh",
+    "build": "skaffold build",
+    "dev": "skaffold dev --cleanup=false -v info"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+}

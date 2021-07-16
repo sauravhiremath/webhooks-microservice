@@ -1,0 +1,83 @@
+apiVersion: skaffold/v2alpha4
+kind: Config
+metadata:
+  name: webhooks-microservice
+build:
+  artifacts:
+    - image: nginx-gateway
+      context: services/nginx
+      docker:
+        dockerfile: Dockerfile
+    - image: admin-gateway-service
+      context: services/admin-gateway-service
+      docker:
+        dockerfile: dev.Dockerfile
+    - image: web-gateway-service
+      context: services/web-gateway-service
+      docker:
+        dockerfile: dev.Dockerfile
+    - image: webhooks-service
+      context: services/webhooks-service
+      docker:
+        dockerfile: dev.Dockerfile
+deploy:
+  kubectl:
+    manifests:
+      - services/nginx/k8s-svc.dev.yml
+      - services/nginx/k8s-pod.yml
+      - config/secret.yml
+      - config/base-config.yml
+      - services/admin-gateway-service/k8s-pod.yml
+      - services/admin-gateway-service/k8s-svc.yml
+      - services/web-gateway-service/k8s-pod.yml
+      - services/web-gateway-service/k8s-svc.yml
+      - services/webhooks-service/k8s-pod.yml
+  helm:
+    releases:
+      - name: nats
+        chartPath: bitnami/nats
+        remote: true
+        setValues:
+          auth.enabled: false
+      - name: redis
+        chartPath: bitnami/redis
+        remote: true
+        setValues:
+          usePassword: false
+          master.persistence.enabled: false
+          slave.persistence.enabled: false
+      - name: webhooks-mongo
+        chartPath: bitnami/mongodb
+        remote: true
+        setValues: { usePassword: false }
+profiles:
+  - name: gcb
+    patches:
+      - op: replace
+        path: /build/artifacts/1/docker/dockerfile
+        value: Dockerfile
+      - op: replace
+        path: /build/artifacts/2/docker/dockerfile
+        value: Dockerfile
+      - op: replace
+        path: /build/artifacts/3/docker/dockerfile
+        value: Dockerfile
+      - op: replace
+        path: /build/artifacts/4/docker/dockerfile
+        value: Dockerfile
+    deploy:
+      kubectl:
+        manifests:
+          - config/managed-cert.yml
+          - config/load-balancer-backend-config.yml
+          - config/ingress.yml
+
+          - services/nginx/k8s-svc.yml
+          - services/nginx/k8s-pod.yml
+          - config/secret.yml
+          - config/base-config.yml
+          - services/admin-gateway-service/k8s-pod.yml
+          - services/admin-gateway-service/k8s-svc.yml
+          - services/web-gateway-service/k8s-pod.yml
+          - services/web-gateway-service/k8s-svc.yml
+          - services/webhooks-service/k8s-pod.yml
