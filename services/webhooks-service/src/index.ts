@@ -1,5 +1,5 @@
 import { ServiceBroker } from "moleculer";
-import HealthMiddleware from "@webhooks-microservice/healthcheck";
+import HealthMiddleware from "@webhooks-microservice/health-check";
 import Service from "./webhooks-service";
 
 const registry = {
