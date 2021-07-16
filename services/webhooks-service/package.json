@@ -1,0 +1,25 @@
+{
+  "name": "webhooks-service",
+  "version": "0.0.1",
+  "description": "Main webhooks service containing all actions",
+  "author": "Saurav M. H <sauravhiremath@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.3.2",
+    "@types/node-fetch": "^2.5.11",
+    "jest": "^27.0.6",
+    "jest-cli": "^27.0.6",
+    "moleculer-repl": "^0.6.6",
+    "ts-jest": "^27.0.3",
+    "ts-node": "^10.1.0",
+    "ts-node-dev": "^1.1.8",
+    "tslint": "^6.1.3",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "fetch-retry": "^4.1.1",
+    "isomorphic-fetch": "^3.0.0",
+    "moleculer": "^0.14.15"
+  }
+}
