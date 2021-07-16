@@ -1,9 +1,22 @@
 import { randomUUID } from "crypto";
 import fetchRetry from "fetch-retry";
 import nodeFetch from "isomorphic-fetch";
-import { Service, ServiceBroker, Context, NodeHealthStatus } from "moleculer";
+import {
+  Service,
+  ServiceBroker,
+  Context,
+  NodeHealthStatus,
+  Errors,
+} from "moleculer";
 import dbMixin from "@webhooks-microservice/db-mixin";
 const fetch = fetchRetry(nodeFetch);
+
+enum CustomErrors {
+  HOOK_CREATE_FAILED = "HOOK_CREATE_FAILED",
+  HOOK_UPDATE_FAILED = "HOOK_UPDATE_FAILED",
+  HOOK_LISTS_FAILED = "HOOK_LISTS_FAILED",
+  HOOK_TRIGGER_FAILED = "HOOK_TRIGGER_FAILED",
+}
 
 export default class WebhookService extends Service {
   constructor(_broker: ServiceBroker) {
@@ -37,13 +50,6 @@ export default class WebhookService extends Service {
           handler: this.triggerHook,
         },
       },
-      events: {
-        // "rooms.player.joined": this.handlePlayerJoined,
-        // "rooms.player.left": this.handlePlayerLeft,
-        // "rooms.removed": this.handleRoomRemoved,
-        // "games.turn.updated": (ctx) =>
-        //   this.gameService.onTurnUpdated(ctx.params),
-      },
       entityCreated: this.entityCreated,
       entityUpdated: this.entityUpdated,
       entityRemoved: this.entityRemoved,
@@ -64,7 +70,11 @@ export default class WebhookService extends Service {
       return { success: true, message: "New hook created successfully", id };
     } catch (error) {
       this.logger.warn(error);
-      return { success: false, error };
+      throw new Errors.MoleculerError(
+        "Hook creation failed",
+        401,
+        CustomErrors.HOOK_CREATE_FAILED
+      );
     }
   }
 
@@ -87,10 +97,11 @@ export default class WebhookService extends Service {
       };
     } catch (error) {
       this.logger.warn({ message: `Hook update for ${id} failed`, error });
-      return {
-        success: false,
-        message: `Hook ID ${id} failed. Try again!`,
-      };
+      throw new Errors.MoleculerError(
+        `Hook ID ${id} failed. Try again!`,
+        401,
+        CustomErrors.HOOK_UPDATE_FAILED
+      );
     }
   }
 
@@ -110,10 +121,11 @@ export default class WebhookService extends Service {
       };
     } catch (error) {
       this.logger.warn({ message: `Hooks list aggregation failed`, error });
-      return {
-        success: false,
-        message: `Hooks list fetch failed`,
-      };
+      throw new Errors.MoleculerError(
+        `Hooks list fetch failed`,
+        401,
+        CustomErrors.HOOK_LISTS_FAILED
+      );
     }
   }
 
@@ -149,10 +161,11 @@ export default class WebhookService extends Service {
         message: `Webhooks bulk targetUrls trigger failed`,
         error,
       });
-      return {
-        success: false,
-        message: `Webhooks bulk targetUrls trigger failed`,
-      };
+      throw new Errors.MoleculerError(
+        `Webhooks bulk targetUrls trigger failed`,
+        401,
+        CustomErrors.HOOK_TRIGGER_FAILED
+      );
     }
   }
 
