@@ -91,7 +91,7 @@ export default class WebhookService extends Service {
 
 									if (
 										results.some(
-											(status: number) => status !== 200
+											(status) => status === "rejected"
 										)
 									) {
 										throw new Errors.MoleculerError(
@@ -176,10 +176,10 @@ export default class WebhookService extends Service {
 			[]
 		);
 
-		const allResults: number[] = [];
+		const allResults: ("rejected" | "fulfilled")[] = [];
 		// Send batch requests of chunkSize asynchronously
 		for (const chunkedUrls of chunkedTargetUrls) {
-			const chunkResults = await Promise.all(
+			const chunkResults = await Promise.allSettled(
 				chunkedUrls.map((url) =>
 					fetch(url, {
 						method: "POST",
