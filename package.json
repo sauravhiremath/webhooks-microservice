@@ -11,8 +11,7 @@
     "ci": "jest --watch",
     "test": "jest --coverage",
     "lint": "eslint --ext .js,.ts .",
-    "dc:up": "docker-compose up --build -d",
-    "dc:dev:up": "docker-compose up --build",
+    "dc:up": "docker-compose up --build",
     "dc:logs": "docker-compose logs -f",
     "dc:down": "docker-compose down"
   },
