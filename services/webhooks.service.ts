@@ -64,7 +64,7 @@ export default class WebhookService extends Service {
 							) {
 								try {
 									const { clientIp } = ctx.meta;
-									this.logger.info({ clientIp });
+									this.logger.info(`clientIp - ${clientIp}`);
 									const docs: any[] = await this.adapter.find(
 										{}
 									);

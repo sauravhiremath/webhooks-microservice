@@ -85,30 +85,6 @@ export default class ApiService extends Service {
 
 			methods: {
 				/**
-				 * Verify and Decode the JWT token using the Seret.
-				 *
-				 * @private
-				 * @param {string} token
-				 * @returns {Promise<any>}
-				 * @memberof AdminGatewayService
-				 */
-				verifyAndDecode: (token: string): Promise<any> =>
-					new Promise((resolve, reject) => {
-						verify(
-							token,
-							process.env.JWT_SECRET,
-							(err: any, decoded: any) => {
-								if (err) {
-									reject(err);
-									return;
-								}
-								resolve(decoded);
-								return;
-							}
-						);
-					}),
-
-				/**
 				 * Authenticate the request. It checks the `Authorization` token value in the request header.
 				 * Check the token value & resolve the user by the token.
 				 * The resolved user will be available in `ctx.meta.user`
@@ -119,8 +95,8 @@ export default class ApiService extends Service {
 				 * @returns {Promise}
 				 */
 
-				authenticate: (
-					ctx: Context,
+				authorize: async (
+					ctx: Context<{}, { user: string }>,
 					route: any,
 					req: IncomingMessage
 				): Promise<any> => {
@@ -129,21 +105,23 @@ export default class ApiService extends Service {
 
 					if (auth && auth.startsWith("Bearer")) {
 						const token = auth.slice(7);
-						return this.verifyAndDecode(token)
-							.then((decoded: any) => {
-								// @ts-ignore
-								ctx.meta.user = decoded;
-								return ctx;
-							})
-							.catch((err: any) => {
-								this.logger.warn(err);
-								throw new ApiGateway.Errors.UnAuthorizedError(
-									ApiGateway.Errors.ERR_INVALID_TOKEN,
-									{
-										error: "Invalid Token",
-									}
-								);
-							});
+						try {
+							const result: { name: string; iat: string } =
+								await ApiService.verifyAndDecode(token);
+							if (!result) {
+								throw new Error("Invalid Token");
+							}
+							ctx.meta.user = result.name;
+							return ctx;
+						} catch (error) {
+							this.logger.warn(error);
+							throw new ApiGateway.Errors.UnAuthorizedError(
+								ApiGateway.Errors.ERR_INVALID_TOKEN,
+								{
+									error: "Invalid Token",
+								}
+							);
+						}
 					} else {
 						throw new ApiGateway.Errors.UnAuthorizedError(
 							CustomErrors.ERR_NO_TOKEN,
@@ -163,7 +141,7 @@ export default class ApiService extends Service {
 				 * @returns {Promise}
 				 */
 
-				authorize: (
+				authenticate: (
 					ctx: Context<any, { user: string }>,
 					route: Record<string, undefined>,
 					req: IncomingMessage
@@ -184,6 +162,26 @@ export default class ApiService extends Service {
 					return;
 				},
 			},
+		});
+	}
+
+	/**
+	 * Verify and Decode the JWT token using the Secret.
+	 *
+	 * @private
+	 * @param {string} token
+	 * @returns {Promise<any>}
+	 * @memberof AdminGatewayService
+	 */
+	private static verifyAndDecode(token: string): any {
+		return new Promise((resolve, reject) => {
+			verify(token, process.env.JWT_SECRET, (err: any, decoded: any) => {
+				if (err) {
+					reject(err);
+					return;
+				}
+				return resolve(decoded);
+			});
 		});
 	}
 }
