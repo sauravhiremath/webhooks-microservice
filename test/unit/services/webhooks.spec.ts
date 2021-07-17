@@ -21,22 +21,20 @@ describe("Test 'webhooks' service", () => {
 		};
 
 		describe("Test 'webhooks.trigger'", () => {
-			it("should call the adapter find method & send the http triggers", async () => {
+			it("should fail to send the http triggers", async () => {
 				service.adapter.updateById.mockImplementation(
 					async () => record
 				);
 				service.transformDocuments.mockClear();
 				service.entityChanged.mockClear();
 
-				const res = await broker.call("webhooks.trigger");
-				expect(res).toEqual({
-					success: true,
-					message: expect.any(String),
-					data: expect.any(Array),
-				});
-
-				expect(service.adapter.find).toBeCalledTimes(1);
-				expect(service.adapter.find).toBeCalledWith({});
+				try {
+					const res = await broker.call("webhooks.trigger");
+				} catch (error) {
+					expect(error.message).toBe(
+						"Webhooks bulk targetUrls trigger failed"
+					);
+				}
 			});
 		});
 	});

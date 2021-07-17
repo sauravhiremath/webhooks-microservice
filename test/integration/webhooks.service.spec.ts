@@ -81,7 +81,7 @@ describe("Test 'webhooks' service", () => {
 			});
 		});
 
-		it("should send triggers for urls", async () => {
+		it("should fail to send triggers for urls", async () => {
 			const res = await broker.call("webhooks.trigger");
 			expect(res).toEqual({
 				success: true,
