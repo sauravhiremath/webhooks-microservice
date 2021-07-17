@@ -30,6 +30,11 @@ describe("Test 'webhooks' service", () => {
 
 				try {
 					const res = await broker.call("webhooks.trigger");
+					expect(res).toStrictEqual({
+						success: true,
+						message: expect.any(String),
+						data: expect.any(Array),
+					});
 				} catch (error) {
 					expect(error.message).toBe(
 						"Webhooks bulk targetUrls trigger failed"
