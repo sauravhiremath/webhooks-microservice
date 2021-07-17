@@ -12,9 +12,7 @@ In the terminal, try the following commands:
 
 -   `nodes` - List all connected nodes.
 -   `actions` - List all registered service actions.
--   `call greeter.hello` - Call the `greeter.hello` action.
--   `call greeter.welcome --name John` - Call the `greeter.welcome` action with the `name` parameter.
--   `call products.list` - List the products (call the `products.list` action).
+-   `call webhooks.list` - List the webhooks (call the `webhooks.list` action).
 
 ## Services
 
