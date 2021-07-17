@@ -10,13 +10,6 @@ data:
   LOGLEVEL: info
   SERVICEDIR: dist/services
   TRANSPORTER: nats://nats:4222
-  
-  
-  
-  
-  
-  
-  
   CACHER: redis://redis:6379
   MONGO_URI: mongodb://mongo/webhooks-microservice
 
@@ -87,59 +80,31 @@ spec:
 
 ---
 #########################################################
-# Greeter service
+# Webhooks service
 #########################################################
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: greeter
+  name: webhooks
 spec:
   selector:
     matchLabels:
-      app: greeter
+      app: webhooks
   replicas: 2
   template:
     metadata:
       labels:
-        app: greeter
+        app: webhooks
     spec:
       containers:
-      - name: greeter
+      - name: webhooks
         image: webhooks-microservice
         envFrom:
         - configMapRef:
             name: common-env
         env:
           - name: SERVICES
-            value: greeter
-
----
-#########################################################
-# Products service
-#########################################################
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: products
-spec:
-  selector:
-    matchLabels:
-      app: products
-  replicas: 2
-  template:
-    metadata:
-      labels:
-        app: products
-    spec:
-      containers:
-      - name: products
-        image: webhooks-microservice
-        envFrom:
-        - configMapRef:
-            name: common-env
-        env:
-          - name: SERVICES
-            value: products
+            value: webhooks
 
 ---
 #########################################################
