@@ -2,11 +2,14 @@
 
 # webhooks-microservice
 
+![](https://user-images.githubusercontent.com/28642011/126040659-91b3f5d3-70d9-4431-9d50-fc101c511cc5.png)
+
 ## Usage
 
-Start the project with `yarn dev` command.
-After starting, open the http://localhost:3000/ URL in your browser.
-On the welcome page you can test the generated services via API Gateway and check the nodes & services.
+- Create a `.env` and `docker-compose.env` file, with data matching `sample.env`.
+- Start the project with `yarn dev` command.
+- After starting, open the http://localhost:3000/ URL in your browser.
+- On the welcome page you can test the generated services via API Gateway and check the nodes & services. (You will not be allowed to access them without jwt authorization)
 
 In the terminal, try the following commands:
 
