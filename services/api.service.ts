@@ -43,9 +43,9 @@ export default class ApiService extends Service {
 						use: [],
 						mergeParams: true,
 						// Enable authentication. Implement the logic into `authenticate` method. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Authentication
-						authentication: true,
+						authentication: false,
 						// Enable authorization. Implement the logic into `authorize` method. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Authorization
-						authorization: true,
+						authorization: false,
 						autoAliases: false,
 						aliases: {
 							"GET /webhooks/list": "webhooks.list",
@@ -53,7 +53,7 @@ export default class ApiService extends Service {
 							"GET /webhooks/:id": "webhooks.get",
 							"PUT /webhooks/update/:id": "webhooks.update",
 							"DELETE /webhooks/delete/:id": "webhooks.delete",
-							"POST /webhooks/ip": "webhooks.trigger",
+							"POST /webhooks/trigger": "webhooks.trigger",
 						},
 						bodyParsers: {
 							json: {

@@ -58,13 +58,11 @@ export default class WebhookService extends Service {
 						 * Send triggers for all targetUrls.
 						 */
 						trigger: {
-							rest: "POST /ip",
-							async handler(
-								ctx: Context<{}, { clientIp: string }>
-							) {
+							rest: "POST /trigger",
+							async handler(ctx: Context<{ ipAddress: string }>) {
 								try {
-									const { clientIp } = ctx.meta;
-									this.logger.info(`clientIp - ${clientIp}`);
+									const { ipAddress } = ctx.params;
+									this.logger.info(`clientIp - ${ipAddress}`);
 									const docs: any[] = await this.adapter.find(
 										{}
 									);
@@ -83,7 +81,7 @@ export default class WebhookService extends Service {
 										await WebhookService.fetchByChunks(
 											targetUrls,
 											{
-												ipAddress: clientIp,
+												ipAddress,
 											}
 										);
 
